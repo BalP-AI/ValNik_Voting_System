@@ -1,3 +1,5 @@
+//Icsd18174 Chrysovalantis Pateiniotis
+//Icsd18218 Nikos Tzekas
 package sample;
 
 import javafx.application.Application;
