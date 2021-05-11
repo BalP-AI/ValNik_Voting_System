@@ -11,7 +11,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../FXMLS/sample.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("ValNik Voting System");
+        primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
