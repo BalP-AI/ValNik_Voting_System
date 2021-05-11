@@ -2,7 +2,7 @@ package sample;
 
 import java.io.Serializable;
 
-public class Voter implements Serializable {
+public class Voter {
 
     String name;
     String email;
