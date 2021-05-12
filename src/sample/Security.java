@@ -1,5 +1,6 @@
 package sample;
 
+import javax.crypto.Cipher;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,7 +47,7 @@ public class Security
         PKCS8EncodedKeySpec ks = new PKCS8EncodedKeySpec(bytes);
         KeyFactory kf = KeyFactory.getInstance("RSA");
         PrivateKey pvt = kf.generatePrivate(ks);
-        System.out.println("here we print the priv key: " + pvt);
+        //System.out.println("here we print the priv key: " + pvt);
         return pvt;
     }
 
@@ -61,9 +62,39 @@ public class Security
         X509EncodedKeySpec ks = new X509EncodedKeySpec(bytes);
         KeyFactory kf = KeyFactory.getInstance("RSA");
         PublicKey pub = kf.generatePublic(ks);
-        System.out.println("here we print the priv key: " + pub);
+        //System.out.println("here we print the priv key: " + pub);
         return pub;
     }
+
+    public  byte[] encrypt (String plainText,PublicKey publicKey ) throws Exception
+    {
+        //Get Cipher Instance RSA With ECB Mode and OAEPWITHSHA-512ANDMGF1PADDING Padding
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-512ANDMGF1PADDING");
+
+        //Initialize Cipher for ENCRYPT_MODE
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+
+        //Perform Encryption
+        byte[] cipherText = cipher.doFinal(plainText.getBytes()) ;
+
+        return cipherText;
+    }
+
+    public  String decrypt (byte[] cipherTextArray, PrivateKey privateKey) throws Exception
+    {
+        //Get Cipher Instance RSA With ECB Mode and OAEPWITHSHA-512ANDMGF1PADDING Padding
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-512ANDMGF1PADDING");
+
+        //Initialize Cipher for DECRYPT_MODE
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+
+        //Perform Decryption
+        byte[] decryptedTextArray = cipher.doFinal(cipherTextArray);
+
+        return new String(decryptedTextArray);
+    }
+
+
 
     //Virtual Signature Method
     public void SingVir() throws IOException, SignatureException

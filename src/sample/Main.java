@@ -9,14 +9,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+import java.util.Arrays;
+
+public class Main extends Application
+{
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception
+    {
         Security sec = new Security();
-        sec.writeKeys();
-        sec.getPrivKey();
-        sec.getPublKey();
+        sec.writeKeys();  //Intitializes the keys
+
+        byte[] cipher =sec.encrypt("HellO Tallia", sec.getPublKey());
+        System.out.println("Cipher "+ Arrays.toString(cipher) );
+        System.out.println( "Decrypted " + sec.decrypt(cipher, sec.getPrivKey()));
+
         Handler handler = new Handler();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLS/OpenScreen.fxml"));
         Parent root = loader.load();
@@ -29,7 +36,8 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         launch(args);
     }
 }
