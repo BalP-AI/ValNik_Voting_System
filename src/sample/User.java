@@ -24,7 +24,7 @@ public class User
     }
 
     public String  getEmail(){return email;}
-
+    public void setHasVoted(){hasVoted = true;}
     public void setSalt(String salt){this.salt = salt;}
     public String getSalt(){return salt;}
 }
