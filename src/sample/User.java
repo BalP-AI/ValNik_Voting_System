@@ -7,6 +7,7 @@ public class User
 
     String name;
     String email;
+    String password;
     boolean hasVoted;
     String salt;
 
@@ -16,6 +17,13 @@ public class User
         this.email = email;
         hasVoted = false;
     }
+    public void setPassword(String password){this.password = password;}
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String  getEmail(){return email;}
 
     public void setSalt(String salt){this.salt = salt;}
     public String getSalt(){return salt;}

@@ -2,6 +2,7 @@
 //Icsd18218 Nikos Tzekas
 package sample;
 
+import Controllers.OpenScreenController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +17,11 @@ public class Main extends Application {
         sec.writeKeys();
         sec.getPrivKey();
         sec.getPublKey();
-        Parent root = FXMLLoader.load(getClass().getResource("../FXMLS/OpenScreen.fxml"));
+        Handler handler = new Handler();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLS/OpenScreen.fxml"));
+        Parent root = loader.load();
+        OpenScreenController c = loader.getController();
+        c.inject(handler);
         primaryStage.setTitle("ValNik Voting System");
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root));

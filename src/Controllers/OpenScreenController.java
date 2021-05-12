@@ -7,6 +7,7 @@ import java.sql.SQLOutput;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import sample.Handler;
 
 public class OpenScreenController
 {
@@ -18,12 +19,14 @@ public class OpenScreenController
     @FXML
     private Button go;
 
+    Handler handler;
 
-    public void data_check()
-    {
-            System.out.println(username.getText());
-            System.out.println(passwd.getText());
+
+    public void login() {
+        handler.login(username.getText(),passwd.getText());
     }
+
+    public void inject(Handler handler){this.handler = handler;}
 
 
 }
