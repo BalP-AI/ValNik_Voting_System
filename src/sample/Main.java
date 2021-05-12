@@ -12,6 +12,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        Security sec = new Security();
+        sec.writeKeys();
+        sec.getPrivKey();
+        sec.getPublKey();
         Parent root = FXMLLoader.load(getClass().getResource("../FXMLS/OpenScreen.fxml"));
         primaryStage.setTitle("ValNik Voting System");
         primaryStage.setResizable(false);
