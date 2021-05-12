@@ -1,6 +1,9 @@
 package sample;
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,6 +12,7 @@ import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 public class Security
 {
@@ -66,7 +70,7 @@ public class Security
         return pub;
     }
 
-    public  byte[] encrypt (String plainText,PublicKey publicKey ) throws Exception
+    public byte[] encrypt(String plainText, PublicKey publicKey) throws Exception
     {
         //Get Cipher Instance RSA With ECB Mode and OAEPWITHSHA-512ANDMGF1PADDING Padding
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-512ANDMGF1PADDING");
@@ -75,12 +79,12 @@ public class Security
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
         //Perform Encryption
-        byte[] cipherText = cipher.doFinal(plainText.getBytes()) ;
+        byte[] cipherText = cipher.doFinal(plainText.getBytes());
 
         return cipherText;
     }
 
-    public  String decrypt (byte[] cipherTextArray, PrivateKey privateKey) throws Exception
+    public String decrypt(byte[] cipherTextArray, PrivateKey privateKey) throws Exception
     {
         //Get Cipher Instance RSA With ECB Mode and OAEPWITHSHA-512ANDMGF1PADDING Padding
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-512ANDMGF1PADDING");
@@ -94,7 +98,35 @@ public class Security
         return new String(decryptedTextArray);
     }
 
+    //The key here comes out encoded already thats why we return a String
+    public String encodedaesKey()
+    {
+        KeyGenerator keyGen;
 
+        try
+        {
+            keyGen = KeyGenerator.getInstance("AES");
+            keyGen.init(256);
+            SecretKey secretKey = keyGen.generateKey();
+            String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+            System.out.println(encodedKey);
+            return encodedKey;
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+    //We take  the String of the encoded text and we decoded to get back our original key AES-256
+    public SecretKey decodedaesKey(String encodedKey)
+    {
+        // decode the base64 encoded string
+        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
+        // rebuild key using SecretKeySpec
+        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        return originalKey;
+    }
 
     //Virtual Signature Method
     public void SingVir() throws IOException, SignatureException
