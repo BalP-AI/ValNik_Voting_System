@@ -11,7 +11,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" prefHeight="500.0" prefWidth="457.0" style="-fx-background-color: #cceeff;" vgap="10" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Controller">
+
+<GridPane alignment="center" hgap="10" prefHeight="500.0" prefWidth="457.0" vgap="10" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.OpenScreenController">
    <columnConstraints>
       <ColumnConstraints />
    </columnConstraints>
@@ -20,20 +21,20 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="455.0" stylesheets="@../CSS/test.css" GridPane.rowIndex="1">
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="455.0" stylesheets="@../CSS/OpenScreen.css" GridPane.rowIndex="1">
          <children>
-            <Button layoutX="198.0" layoutY="298.0" mnemonicParsing="false" stylesheets="@../CSS/test.css" text="Proceed" />
-            <Label layoutX="111.0" layoutY="34.0" prefHeight="35.0" prefWidth="233.0" text="ValNik Voting System" textAlignment="JUSTIFY" textFill="#20329a">
+            <Button fx:id="go" layoutX="198.0" layoutY="298.0" mnemonicParsing="false" onAction="#data_check" stylesheets="@../CSS/OpenScreen.css" text="Proceed" />
+            <Label alignment="CENTER" layoutX="111.0" layoutY="37.0" prefHeight="35.0" prefWidth="233.0" text="ValNik Voting System" textAlignment="CENTER" textFill="#20329a" wrapText="true">
                <font>
                   <Font name="Arial" size="24.0" />
                </font>
             </Label>
-            <Label layoutX="196.0" layoutY="101.0" text="Username">
+            <Label layoutX="196.0" layoutY="118.0" text="Username">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField layoutX="141.0" layoutY="146.0" promptText="Username">
+            <TextField fx:id="username" layoutX="141.0" layoutY="146.0" promptText="Username">
                <font>
                   <Font size="14.0" />
                </font>
@@ -41,12 +42,12 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </opaqueInsets>
             </TextField>
-            <TextField layoutX="141.0" layoutY="221.0" promptText="Password">
+            <TextField fx:id="passwd" layoutX="141.0" layoutY="221.0" promptText="Password">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="183.0" layoutY="439.0" prefHeight="15.0" prefWidth="88.0" text="Your Vote Matters!">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="184.0" layoutY="460.0" prefHeight="15.0" prefWidth="88.0" text="Your Vote Matters!">
                <font>
                   <Font name="Garamond" size="10.0" />
                </font>
@@ -54,6 +55,7 @@
                   <Cursor fx:constant="NONE" />
                </cursor>
             </Label>
+            <Label layoutX="202.0" layoutY="195.0" text="Password" />
          </children>
       </Pane>
    </children>
