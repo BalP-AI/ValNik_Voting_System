@@ -19,6 +19,7 @@ public class Handler
 
     Hashtable<String, User> users;
     Ballot ballot;
+    Security sec = new Security();
 
 
     public Handler()
@@ -68,7 +69,7 @@ public class Handler
     {
         User usr = users.get(email);
         if (usr == null) return;
-        if (usr.getEmail().equals(email) && usr.getPassword().equals(passwd))
+        if (usr.getEmail().equals(email) && usr.getPassword().equals(sec.sha256(passwd,new byte[]{1,2,4})))
         {
             try
             {
@@ -118,8 +119,9 @@ public class Handler
     private void sentPassword()
     {
         //System.out.println("random pass " + generatePassword());   Todo implement this when the testing is done
-        users.forEach((key, value) -> value.setPassword("123"));
-        users.forEach((key, value) -> System.out.println(value.getEmail() + " " + value.getPassword()));
+        String passwd = generatePassword();
+        users.forEach((key, value) -> value.setPassword(sec.sha256(passwd,new byte[]{1,2,4})));
+        users.forEach((key, value) -> System.out.println(value.getEmail() + " " + value.getPassword() + "from: " + passwd));
     }
 
     //Secure random password Generator of 12 char
@@ -132,7 +134,6 @@ public class Handler
         String combinedChars = capitalCaseLetters + lowerCaseLetters + specialCharacters + numbers;
         SecureRandom secureRandom = new SecureRandom();
         char[] password = new char[12];
-        System.out.println(combinedChars);
         for (int i = 0; i < 12; i++)
         {
             password[i] = combinedChars.charAt(secureRandom.nextInt(combinedChars.length()));

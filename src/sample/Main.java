@@ -2,12 +2,12 @@
 //Icsd18218 Nikos Tzekas
 package sample;
 
-import Controllers.OpenScreenController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import Controllers.OpenScreenController;
 
 import java.util.Arrays;
 

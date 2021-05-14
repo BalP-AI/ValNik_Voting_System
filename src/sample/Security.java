@@ -128,7 +128,7 @@ public class Security
         return originalKey;
     }
 
-    public static String sha256(String password, byte[] salt) {
+    public String sha256(String password, byte[] salt) {
 
         String hashedPassword = null;
         try {
@@ -147,7 +147,7 @@ public class Security
         return hashedPassword;
     }
 
-    private static byte[] getSalt() throws NoSuchAlgorithmException {
+    private byte[] getSalt() throws NoSuchAlgorithmException {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
