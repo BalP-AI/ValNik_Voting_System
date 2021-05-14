@@ -1,7 +1,15 @@
 package sample;
 
+import Controllers.OpenScreenController;
+import Controllers.VotingScreen;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Scanner;
@@ -41,7 +49,21 @@ public class Handler {
         if(usr == null)
             return;
         if(usr.getEmail().equals(email) && usr.getPassword().equals(passwd)){
-            System.out.println("you are in");
+            try {
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLS/VotingScreen.fxml"));
+                Parent root = loader.load();
+                VotingScreen v = loader.getController();
+
+                v.inject(ballot.getCandidates());
+                Stage st = new Stage();
+                st.setTitle("ValNik Voting System");
+                st.setResizable(false);
+                st.setScene(new Scene(root));
+                st.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
