@@ -9,7 +9,7 @@ public class User
     String email;
     String password;
     boolean hasVoted;
-    String salt;
+    Byte[] salt;
 
 
     public User(String name, String email){
@@ -25,6 +25,6 @@ public class User
 
     public String  getEmail(){return email;}
     public void setHasVoted(){hasVoted = true;}
-    public void setSalt(String salt){this.salt = salt;}
-    public String getSalt(){return salt;}
+    public void setSalt(Byte[] salt){this.salt = salt;}
+    public Byte[] getSalt(){return salt;}
 }

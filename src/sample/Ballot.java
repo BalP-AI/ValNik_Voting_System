@@ -21,5 +21,8 @@ public class Ballot implements Serializable
 
     public ArrayList<String> getCandidates(){return candidates;}
 
-
+    public String getTitle()
+    {
+        return title;
+    }
 }
