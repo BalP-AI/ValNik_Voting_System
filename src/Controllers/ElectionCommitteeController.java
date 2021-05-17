@@ -31,7 +31,7 @@ public class ElectionCommitteeController
     Handler handler;
     Security sec = new Security();
 
-    public void initiate()
+    public void initiate() throws Exception
     {
         handler.login(username.getText(), mastercode.getText());
     }

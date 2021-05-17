@@ -130,11 +130,42 @@ public class Handler
     }
 
 
-    public void login(String email, String passwd)
+    public void login(String emailtx, String passwdtx) throws Exception
     {
-        User usr = users.get(email);
-        if (usr == null) return;
-        if (usr.getEmail().equals(email) && usr.getPassword().equals(sec.sha256(passwd, new byte[]{1, 2, 4})))
+        System.out.println("in login");
+        System.out.println(emailtx);
+        System.out.println(passwdtx);
+        File myObj = new File("usersfinal.txt");
+        String name = null;
+        String email = null;
+        byte[] encryptedpasswd = null;
+        byte[] salt = null;
+
+        try
+        {
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine())
+            {
+                String data = myReader.nextLine();
+                String[] tmpinfo = data.split(";");
+                if (tmpinfo[1].equals(emailtx))
+                {
+                    name = tmpinfo[0];
+                    email = tmpinfo[1];
+                    //these are decoded back to byte[]
+                    encryptedpasswd = Base64.getDecoder().decode(tmpinfo[2]);
+                    salt = Base64.getDecoder().decode(tmpinfo[3]);
+                    break;
+                }
+            }
+            myReader.close();
+        } catch (IOException e)
+        {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        if (email.equals(emailtx) && sec.decrypt(encryptedpasswd, sec.getPrivKey()).equals(sec.sha256(passwdtx, salt)))
         {
             try
             {
@@ -166,7 +197,7 @@ public class Handler
             while (myReader.hasNextLine())
             {
                 String data = myReader.nextLine();
-                String info[] = data.split(";");
+                String[] info = data.split(";");
                 String name = info[0];
                 String email = info[1];
                 tempUsers.put(email, new User(name, email));
@@ -183,9 +214,6 @@ public class Handler
 
     private void sentPassword()
     {
-        //System.out.println("random pass " + generatePassword());   Todo implement this when the testing is done
-
-
         users.forEach((key, value) ->
         {
             String passwd = generatePassword();  //generate passwd for each user
@@ -223,7 +251,8 @@ public class Handler
 
 
     public void openvotewindow() throws IOException
-    {   Stage primaryStage = new Stage();
+    {
+        Stage primaryStage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLS/OpenScreen.fxml"));
         Parent root = loader.load();
         OpenScreenController c = loader.getController();
