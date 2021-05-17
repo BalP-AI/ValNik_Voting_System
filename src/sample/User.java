@@ -2,14 +2,15 @@ package sample;
 
 import java.io.Serializable;
 
-public class User
+public class User implements  Serializable
 {
 
     String name;
     String email;
-    String password;
+    byte[] encryptedpasswd;  //we changed this from string to byte[] because we want
+                            //the encrypted hash that it is byte[] and not string
     boolean hasVoted;
-    Byte[] salt;
+    byte[] salt;
 
 
     public User(String name, String email){
@@ -17,14 +18,14 @@ public class User
         this.email = email;
         hasVoted = false;
     }
-    public void setPassword(String password){this.password = password;}
+    public void setPassword(byte[] password){this.encryptedpasswd = password;}
 
-    public String getPassword() {
-        return password;
+    public byte[] getPassword() {
+        return encryptedpasswd;
     }
 
     public String  getEmail(){return email;}
     public void setHasVoted(){hasVoted = true;}
-    public void setSalt(Byte[] salt){this.salt = salt;}
-    public Byte[] getSalt(){return salt;}
+    public void setSalt(byte[] salt){this.salt = salt;}
+    public byte[] getSalt(){return salt;}
 }

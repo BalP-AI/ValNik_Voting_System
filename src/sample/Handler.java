@@ -1,5 +1,6 @@
 package sample;
 
+import Controllers.ElectionCommitteeController;
 import Controllers.OpenScreenController;
 import Controllers.VotingScreen;
 import javafx.fxml.FXMLLoader;
@@ -7,11 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.SQLOutput;
+import java.security.spec.InvalidKeySpecException;
 import java.util.*;
 
 public class Handler
@@ -20,18 +21,34 @@ public class Handler
     Hashtable<String, User> users;
     Ballot ballot;
     Security sec = new Security();
+    String elecCommi = null;
+    String masterhash = null;
 
 
-    public Handler()
+    public Handler() throws NoSuchAlgorithmException, IOException
     {
         //create new pair of keys here
-
-
+        sec.writeKeys();
         //get the users from the txt
         users = readUsers();
-
         //sent to their emails their password
         sentPassword();
+        //initiate the election committee
+        try
+        {
+            initiateCommittee();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        //create the final users txt file with the data we need
+        try
+        {
+            finalusers();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
         //get those stuff from file later but for now i just put em karfwta ;)
         ArrayList<String> candi = new ArrayList<>();
         readCandiData(candi);
@@ -43,6 +60,54 @@ public class Handler
         ballot = new Ballot(title, candi, Integer.parseInt(votesnum));
 
     }
+
+    private void finalusers() throws IOException
+    {
+        FileWriter cleaner = new FileWriter("usersfinal.txt", false);
+        cleaner.write("");
+        cleaner.close();
+
+        users.forEach((key, value) ->
+        {
+            FileWriter wr = null;
+            try
+            {
+                wr = new FileWriter("usersfinal.txt", true);
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            try
+            {
+                wr.write(value.name + ";" + value.email + ";" + Base64.getEncoder().encodeToString(value.encryptedpasswd) + ";" + Base64.getEncoder().encodeToString(value.salt) + "\n");
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            try
+            {
+                wr.close();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        });
+
+
+    }
+
+    private void initiateCommittee() throws Exception
+    {
+        //most of the stuff is karfwta alla ginontai kai tyxaia izi
+        users.get("bob@hotmail.com").salt = sec.getSalt();
+        System.out.println("bobs salt" + Arrays.toString(users.get("bob@hotmail.com").salt));
+        //todo at the end change the "123" password
+        users.get("bob@hotmail.com").encryptedpasswd = sec.encrypt(sec.sha256("123", users.get("bob@hotmail.com").getSalt()), sec.getPublKey());
+
+
+    }
+
 
     private void readCandiData(ArrayList<String> candi)
     {
@@ -69,7 +134,7 @@ public class Handler
     {
         User usr = users.get(email);
         if (usr == null) return;
-        if (usr.getEmail().equals(email) && usr.getPassword().equals(sec.sha256(passwd,new byte[]{1,2,4})))
+        if (usr.getEmail().equals(email) && usr.getPassword().equals(sec.sha256(passwd, new byte[]{1, 2, 4})))
         {
             try
             {
@@ -119,9 +184,24 @@ public class Handler
     private void sentPassword()
     {
         //System.out.println("random pass " + generatePassword());   Todo implement this when the testing is done
-        String passwd = generatePassword();
-        users.forEach((key, value) -> value.setPassword(sec.sha256(passwd,new byte[]{1,2,4})));
-        users.forEach((key, value) -> System.out.println(value.getEmail() + " " + value.getPassword() + "from: " + passwd));
+
+
+        users.forEach((key, value) ->
+        {
+            String passwd = generatePassword();  //generate passwd for each user
+            try
+            {
+                System.out.println("Name: " + value.name + " Original Passwd: " + passwd);
+                value.salt = sec.getSalt();  //give each user a salt
+                value.setPassword(sec.encrypt(sec.sha256(passwd, value.salt), sec.getPublKey()));  //save the passwd as a hash for using the premade salt
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        });
+        //users.forEach((key, value) -> System.out.println(value.getEmail() + " " + value.getPassword() + "from unhashed: " + passwd));
+
+
     }
 
     //Secure random password Generator of 12 char
@@ -139,6 +219,19 @@ public class Handler
             password[i] = combinedChars.charAt(secureRandom.nextInt(combinedChars.length()));
         }
         return new String(password);
+    }
+
+
+    public void openvotewindow() throws IOException
+    {   Stage primaryStage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLS/OpenScreen.fxml"));
+        Parent root = loader.load();
+        OpenScreenController c = loader.getController();
+        c.inject(this);
+        primaryStage.setTitle("ValNik Voting System");
+        primaryStage.setResizable(false);
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
     }
 
 }

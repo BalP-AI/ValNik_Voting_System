@@ -30,13 +30,13 @@ public class Security
         FileOutputStream out = new FileOutputStream("src/Keys/priv.key", false);
         out.write(pvt.getEncoded());
         out.close();
-        System.err.println("Private key format: " + pvt.getFormat());
+        //System.err.println("Private key format: " + pvt.getFormat());
         // prints "Private key format: PKCS#8" on my machine
 
         out = new FileOutputStream("src/Keys/pub.key", false);
         out.write(pub.getEncoded());
         out.close();
-        System.err.println("Public key format: " + pub.getFormat());
+        //System.err.println("Public key format: " + pub.getFormat());
         // prints "Public key format: X.509" on my machine
 
     }
@@ -147,7 +147,7 @@ public class Security
         return hashedPassword;
     }
 
-    private byte[] getSalt() throws NoSuchAlgorithmException {
+    public byte[] getSalt() throws NoSuchAlgorithmException {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);

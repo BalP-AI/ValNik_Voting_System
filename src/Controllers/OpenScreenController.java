@@ -1,12 +1,8 @@
 package Controllers;
 
 import javafx.fxml.FXML;
-
-import java.awt.*;
-import java.sql.SQLOutput;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import sample.Handler;
 
 public class OpenScreenController
@@ -22,11 +18,16 @@ public class OpenScreenController
     Handler handler;
 
 
-    public void login() {
-        handler.login(username.getText(),passwd.getText());
+    public void login()
+    {
+
+        handler.login(username.getText(), passwd.getText());
     }
 
-    public void inject(Handler handler){this.handler = handler;}
+    public void inject(Handler handler)
+    {
+        this.handler = handler;
+    }
 
 
 }
