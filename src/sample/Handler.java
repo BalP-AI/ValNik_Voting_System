@@ -280,4 +280,18 @@ public class Handler
     {
         return users;
     }
+    public Hashtable<String, Integer> getResults(){
+
+        Hashtable<String,Integer> results = new Hashtable<>();
+
+        for(Ballot ballot: ballotbox){
+            ArrayList<String> candidates =  ballot.getCandidates();
+            for(String c : candidates){
+                //increase or add the candidates
+                int count = results.containsKey(c) ? results.get(c) : 0;
+                results.put(c, count + 1);
+            }
+        }
+        return results;
+    }
 }

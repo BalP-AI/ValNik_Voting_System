@@ -2,8 +2,12 @@ package Controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import sample.Handler;
 import sample.Security;
 import java.io.File;
@@ -80,8 +84,23 @@ public class ElectionCommitteeController
 
     public void completevoting()
     {
-            //todo add the final stage here
-        Platform.exit();
+        Stage st = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLS/results.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+            resultsController rs = loader.getController();
+            rs.inject(handler);
+            rs.setResults(handler.getResults());
+            st.setTitle("ValNik Voting System");
+            st.setResizable(false);
+            st.setScene(new Scene(root));
+            st.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Platform.exit();
 
     }
 

@@ -23,7 +23,6 @@ public class VotingScreen
     ArrayList<String> candidates;
     int maxnumofvotes;
     String useremail;
-
     public void setHandler(Handler handler)
     {
         this.handler = handler;
