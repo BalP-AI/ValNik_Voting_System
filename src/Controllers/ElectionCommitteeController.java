@@ -6,21 +6,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import sample.Handler;
 import sample.Security;
-import sample.User;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.sql.SQLOutput;
 import java.util.Base64;
-import java.util.Hashtable;
 import java.util.Scanner;
 
 public class ElectionCommitteeController
 {
-
+    @FXML
+    private Button terminate;
     @FXML
     private TextField username;
     @FXML
@@ -66,7 +62,10 @@ public class ElectionCommitteeController
                     if (sec.decrypt(encryptedpasswd, sec.getPrivKey()).equals(sec.sha256(mastercode.getText(), salt)))
                     {
                         handler.openvotewindow();
-
+                        username.clear();
+                        mastercode.clear();
+                        start.setVisible(false);
+                        terminate.setVisible(true);
                     }
 
                 }
@@ -78,5 +77,15 @@ public class ElectionCommitteeController
             e.printStackTrace();
         }
     }
+
+    public void completevoting()
+    {
+            //todo add the final stage here
+        Platform.exit();
+
+    }
+
+
+
 
 }

@@ -1,28 +1,28 @@
 package sample;
 
-import Controllers.ElectionCommitteeController;
 import Controllers.OpenScreenController;
 import Controllers.VotingScreen;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
 import java.util.*;
 
 public class Handler
 {
-
+    List<Ballot> ballotbox = new ArrayList<>();
     Hashtable<String, User> users;
     Ballot ballot;
     Security sec = new Security();
     String elecCommi = null;
     String masterhash = null;
+
 
 
     public Handler() throws NoSuchAlgorithmException, IOException
@@ -165,15 +165,18 @@ public class Handler
             e.printStackTrace();
         }
 
-        if (email.equals(emailtx) && sec.decrypt(encryptedpasswd, sec.getPrivKey()).equals(sec.sha256(passwdtx, salt)))
+        if (email.equals(emailtx) && sec.decrypt(encryptedpasswd, sec.getPrivKey()).equals(sec.sha256(passwdtx, salt)) && !users.get(email).gethasVoted())
         {
+
             try
             {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLS/VotingScreen.fxml"));
                 Parent root = loader.load();
                 VotingScreen v = loader.getController();
-
+                v.setHandler(this);
+                v.setUseremail(email);
                 v.inject(ballot.getCandidates());
+                v.setMaxnumofvotes(ballot.getMaxVotes());
                 v.setTitle(ballot.getTitle());
                 Stage st = new Stage();
                 st.setTitle("ValNik Voting System");
@@ -263,4 +266,18 @@ public class Handler
         primaryStage.show();
     }
 
+
+    public void addtoballotbox(Ballot newballot)
+    {
+        ballotbox.add(newballot);
+    }
+    public void shufflebox()
+    {
+        Collections.shuffle(ballotbox);
+    }
+
+    public Hashtable<String, User> getUsers()
+    {
+        return users;
+    }
 }

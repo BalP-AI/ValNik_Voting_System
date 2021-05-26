@@ -19,6 +19,11 @@ public class Ballot implements Serializable
 
     }
 
+    public int getMaxVotes()
+    {
+        return maxVotes;
+    }
+
     public ArrayList<String> getCandidates(){return candidates;}
 
     public String getTitle()

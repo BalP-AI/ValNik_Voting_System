@@ -6,13 +6,6 @@ import javafx.scene.control.TextField;
 import sample.Handler;
 import sample.Security;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Base64;
-import java.util.Scanner;
-
 public class OpenScreenController
 {
 
@@ -30,6 +23,8 @@ public class OpenScreenController
     {
 
         handler.login(username.getText(), passwd.getText());
+        username.clear();
+        passwd.clear();
     }
 
     public void inject(Handler handler)
